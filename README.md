@@ -54,26 +54,52 @@ See the full write-up: [`docs/incident-report-ssh-bruteforce.md`](docs/incident-
 
 ## Screenshots
 
-| Screenshot | What it shows |
-|---|---|
-| `screenshots/01-network-config.png` | `ip a` on Ubuntu confirming lab network (192.168.50.4) |
-| `screenshots/02-wazuh-overview-menu.png` | Wazuh dashboard navigation |
-| `screenshots/03-disk-full-boot-failure.png` | Services (incl. `wazuh-indexer`, `wazuh-manager`) failing to start after the disk filled |
-| `screenshots/03b-disk-full-df-output.png` | `df -h` / `du -xh` showing the disk at 100% and what was consuming space |
-| `screenshots/04-raw-log-evidence-and-hydra-missing.png` | Raw `journalctl` sshd evidence from the attacker IP, and the initial `hydra: command not found` |
-| `screenshots/05-bait-account-login-screen.png` | Ubuntu login screen showing the `victim` bait account |
-| `screenshots/06-recovery-commands.png` | Indexer recovery commands after clearing disk space |
-| `screenshots/07-logs-flowing-after-recovery.png` | Confirmation that log ingestion resumed post-recovery (370 hits) |
-| `screenshots/08-discover-28-hits-overview.png` | Wazuh Discover filtered on `data.srcip:192.168.50.3` — 28 hits, histogram view |
-| `screenshots/09-discover-rule-levels.png` | Rule-level breakdown: repeated auth failures, brute-force rule, PAM alerts |
-| `screenshots/10-discover-rule-level-12-compromise.png` | The level-12 "Multiple authentication failures followed by a success" alert — confirmed compromise detection |
-| `screenshots/11-indexer-recovery-curl-redacted.png` | Re-enabling the indexer after the disk-full recovery (password redacted) |
-| `screenshots/12-wazuh-install-summary-redacted.png` | Wazuh install completion summary (password redacted) |
+**Network setup**
 
-These are an edited subset of your 46 original screenshots. Two originals were
-excluded (not redacted) because they showed the real Wazuh admin password in
-plaintext — see `docs/screenshot-manifest.md`. Screenshots 11 and 12 are redacted
-versions of similar moments, safe to publish.
+![Network config](screenshots/01-network-config.png)
+*`ip a` on Ubuntu confirming lab network (192.168.50.4)*
+
+![Wazuh overview menu](screenshots/02-wazuh-overview-menu.png)
+*Wazuh dashboard navigation*
+
+**The disk-full incident (see [Lessons Learned](#lessons-learned))**
+
+![Disk full boot failure](screenshots/03-disk-full-boot-failure.png)
+*Services (incl. `wazuh-indexer`, `wazuh-manager`) failing to start after the disk filled*
+
+![Disk full df output](screenshots/03b-disk-full-df-output.png)
+*`df -h` / `du -xh` showing the disk at 100% and what was consuming space*
+
+![Recovery commands](screenshots/06-recovery-commands.png)
+*Indexer recovery commands after clearing disk space*
+
+![Logs flowing after recovery](screenshots/07-logs-flowing-after-recovery.png)
+*Confirmation that log ingestion resumed post-recovery (370 hits)*
+
+**The attack and detection**
+
+![Raw log evidence](screenshots/04-raw-log-evidence-and-hydra-missing.png)
+*Raw `journalctl` sshd evidence from the attacker IP, and the initial `hydra: command not found`*
+
+![Bait account login screen](screenshots/05-bait-account-login-screen.png)
+*Ubuntu login screen showing the `victim` bait account*
+
+![Discover 28 hits overview](screenshots/08-discover-28-hits-overview.png)
+*Wazuh Discover filtered on `data.srcip:192.168.50.3` — 28 hits, histogram view*
+
+![Discover rule levels](screenshots/09-discover-rule-levels.png)
+*Rule-level breakdown: repeated auth failures, brute-force rule, PAM alerts*
+
+![Rule level 12 compromise](screenshots/10-discover-rule-level-12-compromise.png)
+*The level-12 "Multiple authentication failures followed by a success" alert — confirmed compromise detection*
+
+**Misc (redacted)**
+
+![Indexer recovery curl redacted](screenshots/11-indexer-recovery-curl-redacted.png)
+*Re-enabling the indexer after the disk-full recovery (password redacted)*
+
+![Wazuh install summary redacted](screenshots/12-wazuh-install-summary-redacted.png)
+*Wazuh install completion summary (password redacted)*
 
 ## Lessons learned
 
